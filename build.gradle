@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'clofi'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '21'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    //web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //jwt, oauth
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    //jpa
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    //db
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // QueryDSL Implementation
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    //aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    //test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //log
+    implementation 'com.github.napstr:logback-discord-appender:1.0.0'
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+processResources.dependsOn('copySecret')
+
+tasks.register('copySecret', Copy) {
+    from './Running-planet-server-private'
+    include "*.yml"
+    into './src/main/resources'
+}
