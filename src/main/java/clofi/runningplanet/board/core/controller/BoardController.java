@@ -20,8 +20,8 @@ import clofi.runningplanet.board.core.dto.request.UpdateBoardRequest;
 import clofi.runningplanet.board.core.dto.response.BoardDetailResponse;
 import clofi.runningplanet.board.core.dto.response.BoardResponse;
 import clofi.runningplanet.board.core.dto.response.CreateBoardResponse;
-import clofi.runningplanet.board.core.service.BoardQueryService;
-import clofi.runningplanet.board.core.service.BoardReadService;
+import clofi.runningplanet.board.core.service.BoardQueryServiceImpl;
+import clofi.runningplanet.board.core.service.BoardReadServiceImpl;
 import clofi.runningplanet.member.dto.CustomOAuth2User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +29,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class BoardController {
-	private final BoardQueryService boardQueryService;
-	private final BoardReadService boardReadService;
+	private final BoardQueryServiceImpl boardQueryServiceImpl;
+	private final BoardReadServiceImpl boardReadServiceImpl;
 
 	@PostMapping(value = "/api/crew/{crewId}/board", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	private ResponseEntity<CreateBoardResponse> create(
@@ -41,7 +41,7 @@ public class BoardController {
 	) {
 		Long memberId = customOAuth2User.getId();
 		return ResponseEntity.status(HttpStatus.CREATED)
-			.body(boardQueryService.create(crewId, createBoardRequest, imageFile, memberId));
+			.body(boardQueryServiceImpl.create(crewId, createBoardRequest, imageFile, memberId));
 	}
 
 	@GetMapping("/api/crew/{crewId}/board")
@@ -50,7 +50,7 @@ public class BoardController {
 		@AuthenticationPrincipal CustomOAuth2User customOAuth2User
 	) {
 		Long memberId = customOAuth2User.getId();
-		return ResponseEntity.ok(boardReadService.getBoardList(crewId, memberId));
+		return ResponseEntity.ok(boardReadServiceImpl.getBoardList(crewId, memberId));
 	}
 
 	@GetMapping("/api/crew/{crewId}/board/{boardId}")
@@ -61,7 +61,7 @@ public class BoardController {
 	) {
 		Long memberId = customOAuth2User.getId();
 
-		return ResponseEntity.ok(boardReadService.getBoardDetail(crewId, boardId, memberId));
+		return ResponseEntity.ok(boardReadServiceImpl.getBoardDetail(crewId, boardId, memberId));
 	}
 
 	@PatchMapping(value = "/api/crew/{crewId}/board/{boardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -74,7 +74,7 @@ public class BoardController {
 	) {
 		Long memberId = customOAuth2User.getId();
 		return ResponseEntity.status(HttpStatus.OK)
-			.body(boardQueryService.update(crewId, boardId, updateBoardRequest, imageFile, memberId));
+			.body(boardQueryServiceImpl.update(crewId, boardId, updateBoardRequest, imageFile, memberId));
 	}
 
 	@DeleteMapping("/api/crew/{crewId}/board/{boardId}")
@@ -85,7 +85,7 @@ public class BoardController {
 
 	) {
 		Long memberId = customOAuth2User.getId();
-		boardQueryService.deleteBoard(crewId, boardId, memberId);
+		boardQueryServiceImpl.deleteBoard(crewId, boardId, memberId);
 		return ResponseEntity.noContent().build();
 	}
 }
