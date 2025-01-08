@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.board.domain.BoardImage;
 
-public interface BoardImageRepository extends JpaRepository<BoardImage, Long> {
+public interface BoardImageRepository{
 	List<BoardImage> findAllByBoard(Board board);
 
 	void deleteAllByBoard(Board board);
