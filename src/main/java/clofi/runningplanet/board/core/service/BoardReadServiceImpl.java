@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import clofi.runningplanet.board.core.service.role.BoardReadService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,8 +13,8 @@ import clofi.runningplanet.board.comment.repository.CommentRepository;
 import clofi.runningplanet.board.core.dto.response.BoardDetailResponse;
 import clofi.runningplanet.board.core.dto.response.BoardResponse;
 import clofi.runningplanet.board.core.dto.response.ImageList;
-import clofi.runningplanet.board.core.repository.BoardImageRepository;
-import clofi.runningplanet.board.core.repository.BoardRepository;
+import clofi.runningplanet.board.core.repository.role.BoardImageRepository;
+import clofi.runningplanet.board.core.repository.role.BoardRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.board.domain.Comment;
 import clofi.runningplanet.board.domain.ThumbsUp;
@@ -27,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class BoardReadServiceImpl {
+public class BoardReadServiceImpl implements BoardReadService {
 
 	private final BoardRepository boardRepository;
 	private final BoardImageRepository boardImageRepository;

@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import clofi.runningplanet.board.comment.dto.request.CreateCommentRequest;
 import clofi.runningplanet.board.comment.dto.request.UpdateCommentRequest;
 import clofi.runningplanet.board.comment.repository.CommentRepository;
-import clofi.runningplanet.board.core.repository.BoardRepository;
+import clofi.runningplanet.board.core.repository.role.BoardRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.board.domain.Comment;
 import clofi.runningplanet.crew.repository.CrewRepository;

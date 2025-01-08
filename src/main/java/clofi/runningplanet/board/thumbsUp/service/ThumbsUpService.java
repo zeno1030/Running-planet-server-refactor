@@ -2,7 +2,7 @@ package clofi.runningplanet.board.thumbsUp.service;
 
 import org.springframework.stereotype.Service;
 
-import clofi.runningplanet.board.core.repository.BoardRepository;
+import clofi.runningplanet.board.core.repository.role.BoardRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.board.domain.ThumbsUp;
 import clofi.runningplanet.board.thumbsUp.repository.ThumbsUpRepository;

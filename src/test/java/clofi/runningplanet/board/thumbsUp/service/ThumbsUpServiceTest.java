@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import clofi.runningplanet.board.core.repository.BoardRepository;
+import clofi.runningplanet.board.core.repository.role.BoardRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.board.domain.ThumbsUp;
 import clofi.runningplanet.board.thumbsUp.repository.ThumbsUpRepository;

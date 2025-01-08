@@ -1,4 +1,4 @@
-package clofi.runningplanet.board.core.repository;
+package clofi.runningplanet.board.core.repository.role;
 
 import java.util.List;
 

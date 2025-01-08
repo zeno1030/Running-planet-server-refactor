@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import clofi.runningplanet.board.core.service.role.BoardQueryService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,7 +13,7 @@ import clofi.runningplanet.board.core.dto.request.CreateBoardRequest;
 import clofi.runningplanet.board.core.dto.request.UpdateBoardRequest;
 import clofi.runningplanet.board.core.dto.response.CreateBoardResponse;
 import clofi.runningplanet.board.core.factory.BoardFactory;
-import clofi.runningplanet.board.core.repository.BoardRepository;
+import clofi.runningplanet.board.core.repository.role.BoardRepository;
 import clofi.runningplanet.board.domain.Board;
 import clofi.runningplanet.common.service.S3StorageManagerUseCase;
 import clofi.runningplanet.crew.domain.Crew;
@@ -24,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class BoardQueryServiceImpl {
+public class BoardQueryServiceImpl implements BoardQueryService {
 
 	private final BoardFactory boardFactory;
 	private final CrewRepository crewRepository;
@@ -32,6 +33,7 @@ public class BoardQueryServiceImpl {
 	private final MemberRepository memberRepository;
 	private final S3StorageManagerUseCase storageManagerUseCase;
 
+	@Override
 	public CreateBoardResponse create(Long crewId, CreateBoardRequest createBoardRequest,
 		List<MultipartFile> imageFile, Long memberId) {
 
@@ -48,6 +50,7 @@ public class BoardQueryServiceImpl {
 		return boardFactory.insert(crew, createBoardRequest, imageUrlList, member);
 	}
 
+	@Override
 	public CreateBoardResponse update(Long crewId, Long boardId, UpdateBoardRequest updateBoardRequest,
 		List<MultipartFile> imageFile, Long memberId) {
 		Crew crew = crewRepository.findById(crewId).orElseThrow(() -> new IllegalArgumentException("크루가 존재하지 않습니다."));
@@ -62,6 +65,7 @@ public class BoardQueryServiceImpl {
 		return CreateBoardResponse.of(board);
 	}
 
+	@Override
 	public void deleteBoard(Long crewId, Long boardId, Long memberId) {
 		crewRepository.findById(crewId).orElseThrow(() -> new IllegalArgumentException("크루가 존재하지 않습니다."));
 		Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
