@@ -9,4 +9,6 @@ import clofi.runningplanet.crew.domain.Crew;
 
 public interface BoardRepository{
 	List<Board> findAllByCrew(Crew crew);
+
+	Board save(Board board);
 }

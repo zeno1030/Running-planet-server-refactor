@@ -38,7 +38,7 @@ public class BoardFactory {
 		return CreateBoardResponse.of(board);
 	}
 
-	public void update(Crew crew, Board board, UpdateBoardRequest updateBoardRequest, List<MultipartFile> imageFile) {
+	public void update(Board board, UpdateBoardRequest updateBoardRequest, List<MultipartFile> imageFile) {
 		board.updateBoard(updateBoardRequest.getTitle(), updateBoardRequest.getContent());
 		List<BoardImage> imgList = boardImageRepository.findAllByBoard(board);
 		for (BoardImage boardImage : imgList) {
