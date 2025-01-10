@@ -19,4 +19,21 @@ public class BoardRepositoryImpl implements BoardRepository {
     public List<Board> findAllByCrew(Crew crew) {
         return List.of();
     }
+
+    @Override
+    public Board save(Board board) {
+        return boardJpaRepository.save(board);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        boardJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public Board findById(Long id) {
+        return boardJpaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+    }
+
 }

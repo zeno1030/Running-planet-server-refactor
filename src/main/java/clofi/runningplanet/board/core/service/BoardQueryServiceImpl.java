@@ -53,22 +53,20 @@ public class BoardQueryServiceImpl implements BoardQueryService {
 	@Override
 	public CreateBoardResponse update(Long crewId, Long boardId, UpdateBoardRequest updateBoardRequest,
 		List<MultipartFile> imageFile, Long memberId) {
-		Crew crew = crewRepository.findById(crewId).orElseThrow(() -> new IllegalArgumentException("크루가 존재하지 않습니다."));
 		Member member = memberRepository.findById(memberId)
 			.orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-		Board board = boardRepository.findById(boardId)
-			.orElseThrow(() -> new IllegalArgumentException("게시글이 존재하지 않습니다."));
+		Board board = boardRepository.findById(boardId);
 		if (board.getMember().getId() != member.getId()) {
 			throw new IllegalArgumentException("작성자가 아니여서 수정할 수 없습니다.");
 		}
-		boardFactory.update(crew, board, updateBoardRequest, imageFile);
+		boardFactory.update(board, updateBoardRequest, imageFile);
 		return CreateBoardResponse.of(board);
 	}
 
 	@Override
 	public void deleteBoard(Long crewId, Long boardId, Long memberId) {
 		crewRepository.findById(crewId).orElseThrow(() -> new IllegalArgumentException("크루가 존재하지 않습니다."));
-		Board board = boardRepository.findById(boardId).orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+		Board board = boardRepository.findById(boardId);
 		if (board.getMember().getId() != memberId) {
 			throw new IllegalArgumentException("타인이 작성한 게시글은 삭제할 수 없습니다.");
 		}
