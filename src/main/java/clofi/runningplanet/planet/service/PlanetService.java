@@ -38,17 +38,7 @@ public class PlanetService {
 		String planetStage = "";
 
 		if (memberPlanetList.size() == 1) {
-			if (member.getExp() >= 0 && member.getExp() < 2) {
-				planetStage = memberPlanetList.getFirst().getPlanetId().getFirstPlanet();
-			} else if (member.getExp() >= 2 && member.getExp() < 4) {
-				planetStage = memberPlanetList.getFirst().getPlanetId().getSecondPlanet();
-			} else if (member.getExp() >= 4 && member.getExp() < 6) {
-				planetStage = memberPlanetList.getFirst().getPlanetId().getThirdPlanet();
-			} else if (member.getExp() >= 6 && member.getExp() < 8) {
-				planetStage = memberPlanetList.getFirst().getPlanetId().getFourthPlanet();
-			} else {
-				planetStage = memberPlanetList.getFirst().getPlanetId().getFifthPlanet();
-			}
+			planetStage = developPlanetWhenFirstStage(member, memberPlanetList);
 			planetResponseList.add(new PlanetResponse(memberPlanetList.getFirst().getMemberPlanetId(),
 				memberPlanetList.getFirst().getMemberPlanetName(), planetStage, 10.0, member.getExp()));
 
@@ -67,6 +57,22 @@ public class PlanetService {
 			}
 		}
 		return planetResponseList;
+	}
+
+	private static String developPlanetWhenFirstStage(Member member, List<MemberPlanet> memberPlanetList) {
+		String planetStage;
+		if (member.getExp() >= 0 && member.getExp() < 2) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFirstPlanet();
+		} else if (member.getExp() >= 2 && member.getExp() < 4) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getSecondPlanet();
+		} else if (member.getExp() >= 4 && member.getExp() < 6) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getThirdPlanet();
+		} else if (member.getExp() >= 6 && member.getExp() < 8) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFourthPlanet();
+		} else {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFifthPlanet();
+		}
+		return planetStage;
 	}
 
 	public Long updatePlanet(Long planetId, UpdatePlanetNameRequest updatePlanetNameRequest,
