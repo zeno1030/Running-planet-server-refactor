@@ -12,8 +12,8 @@ import clofi.runningplanet.planet.domain.MemberPlanet;
 import clofi.runningplanet.planet.domain.Planet;
 import clofi.runningplanet.planet.dto.request.UpdatePlanetNameRequest;
 import clofi.runningplanet.planet.dto.response.PlanetResponse;
-import clofi.runningplanet.planet.repository.MemberPlanetRepository;
-import clofi.runningplanet.planet.repository.PlanetRepository;
+import clofi.runningplanet.planet.repository.role.MemberPlanetRepository;
+import clofi.runningplanet.planet.repository.role.PlanetRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -43,36 +43,18 @@ public class PlanetService {
 				memberPlanetList.getFirst().getMemberPlanetName(), planetStage, 10.0, member.getExp()));
 
 		} else {
-			for (int i = 0; i < memberPlanetList.size(); i++) {
-				if (i == 0) {
+			for (int memberPlanetCount = 0; memberPlanetCount < memberPlanetList.size(); memberPlanetCount++) {
+				if (memberPlanetCount == 0) {
 					planetResponseList.add(
-						createPlanetResponse(memberPlanetList.get(i), planetStage, 10, 10));
+						createPlanetResponse(memberPlanetList.get(memberPlanetCount), planetStage, 10, 10));
 				} else {
-					double distance = (i == memberPlanetList.size() - 1)
-						? member.getExp() - 10 - (50 * (memberPlanetList.size() - 2))
-						: 50;
-					planetStage = getPlanetStage(distance, planetStage, memberPlanetList);
-					planetResponseList.add(createPlanetResponse(memberPlanetList.get(i), planetStage, 50, distance));
+					double distance = getDistance(memberPlanetCount, memberPlanetList, member);
+					planetStage = developPlanetWhenOverFirstStage(distance, planetStage, memberPlanetList);
+					planetResponseList.add(createPlanetResponse(memberPlanetList.get(memberPlanetCount), planetStage, 50, distance));
 				}
 			}
 		}
 		return planetResponseList;
-	}
-
-	private static String developPlanetWhenFirstStage(Member member, List<MemberPlanet> memberPlanetList) {
-		String planetStage;
-		if (member.getExp() >= 0 && member.getExp() < 2) {
-			planetStage = memberPlanetList.getFirst().getPlanetId().getFirstPlanet();
-		} else if (member.getExp() >= 2 && member.getExp() < 4) {
-			planetStage = memberPlanetList.getFirst().getPlanetId().getSecondPlanet();
-		} else if (member.getExp() >= 4 && member.getExp() < 6) {
-			planetStage = memberPlanetList.getFirst().getPlanetId().getThirdPlanet();
-		} else if (member.getExp() >= 6 && member.getExp() < 8) {
-			planetStage = memberPlanetList.getFirst().getPlanetId().getFourthPlanet();
-		} else {
-			planetStage = memberPlanetList.getFirst().getPlanetId().getFifthPlanet();
-		}
-		return planetStage;
 	}
 
 	public Long updatePlanet(Long planetId, UpdatePlanetNameRequest updatePlanetNameRequest,
@@ -113,7 +95,29 @@ public class PlanetService {
 		));
 	}
 
-	private static String getPlanetStage(double distance, String planetStage, List<MemberPlanet> memberPlanetList) {
+	private static double getDistance(int i, List<MemberPlanet> memberPlanetList, Member member) {
+		return (i == memberPlanetList.size() - 1)
+				? member.getExp() - 10 - (50 * (memberPlanetList.size() - 2))
+				: 50;
+	}
+
+	private static String developPlanetWhenFirstStage(Member member, List<MemberPlanet> memberPlanetList) {
+		String planetStage;
+		if (member.getExp() >= 0 && member.getExp() < 2) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFirstPlanet();
+		} else if (member.getExp() >= 2 && member.getExp() < 4) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getSecondPlanet();
+		} else if (member.getExp() >= 4 && member.getExp() < 6) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getThirdPlanet();
+		} else if (member.getExp() >= 6 && member.getExp() < 8) {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFourthPlanet();
+		} else {
+			planetStage = memberPlanetList.getFirst().getPlanetId().getFifthPlanet();
+		}
+		return planetStage;
+	}
+
+	private static String developPlanetWhenOverFirstStage(double distance, String planetStage, List<MemberPlanet> memberPlanetList) {
 		if (distance >= 0 && distance < 10) {
 			planetStage = memberPlanetList.getFirst().getPlanetId().getFirstPlanet();
 		} else if (distance >= 10 && distance < 20) {

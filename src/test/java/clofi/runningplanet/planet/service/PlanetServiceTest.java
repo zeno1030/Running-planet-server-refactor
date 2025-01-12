@@ -17,8 +17,8 @@ import clofi.runningplanet.planet.domain.MemberPlanet;
 import clofi.runningplanet.planet.domain.Planet;
 import clofi.runningplanet.planet.dto.request.UpdatePlanetNameRequest;
 import clofi.runningplanet.planet.dto.response.PlanetResponse;
-import clofi.runningplanet.planet.repository.MemberPlanetRepository;
-import clofi.runningplanet.planet.repository.PlanetRepository;
+import clofi.runningplanet.planet.repository.role.MemberPlanetRepository;
+import clofi.runningplanet.planet.repository.role.PlanetRepository;
 
 @SpringBootTest
 class PlanetServiceTest {
